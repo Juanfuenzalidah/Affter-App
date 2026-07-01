@@ -39,6 +39,7 @@ jobs:
       - name: Install Android Build Tools
         run: |
           echo "y" | sdkmanager "platforms;android-35"
+          echo "y" | sdkmanager "build-tools;33.0.2"
           echo "y" | sdkmanager "build-tools;34.0.0"
 
       - name: Add Android Platform
