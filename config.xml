@@ -13,6 +13,7 @@
     <allow-intent href="sms:*" />
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
+    <icon src="icono_app.png" />
     <platform name="android">
         <allow-intent href="market:*" />
         <preference name="AndroidXEnabled" value="true" />
@@ -24,4 +25,5 @@
     <plugin name="cordova-plugin-admob-free" spec="0.27.0">
         <variable name="ADMOB_APP_ID" value="ca-app-pub-3940256099942544~3347511713" />
     </plugin>
+    <plugin name="cordova-plugin-androidx-adapter" />
 </widget>
