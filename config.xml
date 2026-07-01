@@ -18,6 +18,8 @@
         <allow-intent href="market:*" />
         <preference name="AndroidXEnabled" value="true" />
         <preference name="GradlePluginKotlinEnabled" value="true" />
+        <preference name="android-targetSdkVersion" value="35" />
+        <preference name="android-compileSdkVersion" value="35" />
     </platform>
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
