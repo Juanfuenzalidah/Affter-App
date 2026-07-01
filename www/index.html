@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Affter: Juego para tomar</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="app">
+        <button id="btn-mute-audio" class="btn-mute hidden">
+            <svg id="icon-unmute" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+            </svg>
+            <svg id="icon-mute" class="hidden" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                <line x1="23" y1="9" x2="17" y2="15"></line>
+                <line x1="17" y1="9" x2="23" y2="15"></line>
+            </svg>
+        </button>
+        <!-- 0. Pantalla Start -->
+        <section id="screen-start" class="screen active" style="display: flex; align-items: center; justify-content: center; background: #0f111a; cursor: pointer; z-index: 9999;">
+            <h1 class="blink-text" style="color: white; font-size: 2rem; text-align: center;">Toca para empezar</h1>
+        </section>
+
+        <!-- 1. Pantalla Home -->
+        <section id="screen-home" class="screen hidden home-bg">
+            <canvas id="particles-canvas"></canvas>
+            <div class="home-container">
+                <h1 class="logo-title">AFFTER</h1>
+                <p class="subtitle">Que la fiesta no termine</p>
+                <button id="btn-play-home" class="btn-giant mt-auto">Jugar 🚀</button>
+            </div>
+        </section>
+
+        <!-- 2. Pantalla Selección de Modo -->
+        <section id="screen-mode-select" class="screen hidden modes-bg">
+            <h2 class="modes-title">Selecciona tu juego</h2>
+            <div class="mode-grid">
+                <div class="mode-box" data-mode="classic">
+                    <h3>🍻 Affter Clásico</h3>
+                    <p>El juego original, cartas, retos, reglas, y quizás pelea entre los jugadores.</p>
+                </div>
+                <div class="mode-box" data-mode="chupistico">
+                    <h3>🗣️ Affter Chupístico</h3>
+                    <p>¡A pensar rápido! Cultura chupística 100%.</p>
+                </div>
+                <div class="mode-box" data-mode="retos">
+                    <h3>😜 Affter Retos</h3>
+                    <p>Solo retos divertidos y absurdos que volverán locos a los jugadores.</p>
+                </div>
+                <div class="mode-box" data-mode="roulette">
+                    <h3>🎡 Affter Ruleta</h3>
+                    <p>¡Gira y que la suerte decida tu castigo!</p>
+                </div>
+                <div class="mode-box" data-mode="hot">
+                    <h3>🔥 Affter Hot</h3>
+                    <p>Para los atrevidos. Sube la temperatura de la mesa.</p>
+                </div>
+                <div class="mode-box" data-mode="pyramid">
+                    <h3>🔺 Affter Pirámide</h3>
+                    <p>Una versión de la clásica pirámide actualizada y mucho más hardcore.</p>
+                </div>
+            </div>
+            <button class="btn-secondary btn-back" data-target="screen-home">Volver</button>
+        </section>
+
+        <!-- 3. Pantalla de Configuración (Dinámica) -->
+        <section id="screen-setup" class="screen hidden">
+            <div class="container setup-container">
+                <h2>Ingresa Jugadores</h2>
+                <p id="setup-instruction">Ingresa los nombres.</p>
+                
+                <div class="input-group">
+                    <input type="text" id="player-input" placeholder="Nombre" autocomplete="off" maxlength="12">
+                </div>
+
+                <div class="avatar-selection hidden" id="avatar-grid">
+                    <!-- Avatares dinámicos -->
+                </div>
+
+                <button id="btn-add-player" disabled>Agregar Jugador</button>
+
+                <ul id="players-list">
+                    <!-- Lista dinámica -->
+                </ul>
+
+                <button id="btn-next-setup" class="btn-primary" disabled>Continuar</button>
+                <button class="btn-secondary btn-back" data-target="screen-mode-select">Volver</button>
+            </div>
+        </section>
+
+        <!-- 4. Pantalla de Selección de Capitán -->
+        <section id="screen-captain" class="screen hidden">
+            <div class="container">
+                <h2>👑 Elige al Capitán 👑</h2>
+                <p style="color: white; text-shadow: 0 1px 3px rgba(0,0,0,0.8);">El capitán es quien tiene el teléfono (Así no botan los vasos por mover el teléfono 😉)</p>
+                <div id="captain-selection" class="button-grid"></div>
+            </div>
+        </section>
+
+        <!-- 5. Pantalla de Juego: Clásico y Retos (Con Plaza) -->
+        <section id="screen-game-classic" class="screen hidden">
+            <div class="game-top-half">
+                <div class="game-header">
+                    <span class="captain-badge">Capitán: <strong class="captain-name"></strong></span>
+                    <span class="card-counter">Carta: <strong class="current-card">0</strong> / <span class="max-cards-label">50</span></span>
+                </div>
+                <div class="card-container">
+                    <div id="game-card-classic" class="card card-anim">
+                        <h2 class="card-title">Título</h2>
+                        <p class="card-text">Texto de la carta</p>
+                    </div>
+                </div>
+                <button class="btn-giant btn-next-card">Siguiente Carta 🍻</button>
+            </div>
+            <div class="game-bottom-half">
+                <div class="player-controls-bar" id="player-controls-bar"></div>
+                <div class="plaza-area" id="plaza-area"></div>
+            </div>
+            <button class="btn-exit-small" onclick="confirmExit()">Salir</button>
+        </section>
+
+        <!-- 6. Pantalla de Juego: Simple (Chupístico y Hot) -->
+        <section id="screen-game-simple" class="screen hidden">
+            <div class="container simple-game-container">
+                <div class="game-header">
+                    <span class="captain-badge">Capitán: <strong class="captain-name">N/A</strong></span>
+                    <span class="card-counter">Carta: <strong class="current-card">0</strong> / <span class="max-cards-label">50</span></span>
+                </div>
+                <div class="card-container" style="flex: 1;">
+                    <div id="game-card-simple" class="card card-anim">
+                        <h2 class="card-title">Título</h2>
+                        <p class="card-text">Texto de la carta</p>
+                    </div>
+                </div>
+                <button class="btn-giant btn-next-card">Siguiente 🍻</button>
+            </div>
+            <button class="btn-exit-small" onclick="confirmExit()">Salir</button>
+        </section>
+
+        <!-- 7. Pantalla de Juego: Pirámide -->
+        <section id="screen-pyramid" class="screen hidden">
+            <div class="container pyramid-container">
+                <h2 class="pyramid-main-title">Pirámide</h2>
+                
+                <div id="pyramid-grid" class="pyramid-grid">
+                    <!-- Cartas inyectadas por JS -->
+                </div>
+
+                <div id="pyramid-turn-indicator-box" style="background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 10px; margin-top: 15px; border: 1px solid rgba(255,255,255,0.2);">
+                    <h4 id="pyramid-turn-indicator" style="color: white; margin: 0; font-size: 1.2rem; text-align: center;">Turno de...</h4>
+                </div>
+            </div>
+
+            <!-- Modal de la carta seleccionada -->
+            <div id="modal-pyramid-card" class="modal hidden" style="z-index: 1000;">
+                <div class="modal-content" style="text-align: center;">
+                    <div id="pyramid-card-closeup" class="card" style="width: 200px; height: 300px; margin: 0 auto 20px auto; border-radius: 20px; display: flex; align-items: center; justify-content: center; padding: 20px;">
+                        <h3 id="pyramid-card-text" style="font-size: 1.5rem; color: inherit;">Texto</h3>
+                    </div>
+                    <button id="btn-pyramid-close" class="btn-giant" style="background: var(--primary-color); width: 100%;">Continuar</button>
+                </div>
+            </div>
+
+            <!-- Modal de Victoria -->
+            <div id="modal-pyramid-win" class="modal hidden" style="z-index: 1000;">
+                <div class="modal-content" style="text-align: center; max-width: 90%;">
+                    <h2 style="color: var(--primary-color); margin-bottom: 10px;">¡Pirámide Superada!</h2>
+                    <p style="margin-bottom: 20px; color: #666;">Han logrado llegar a la cima. ¿Qué sigue ahora?</p>
+                    <button id="btn-pyramid-play-again" class="btn-secondary" style="width: 100%; margin-bottom: 10px;">Jugar de nuevo</button>
+                    <button id="btn-pyramid-hardcore" class="btn-giant" style="width: 100%; margin-bottom: 10px; background: linear-gradient(90deg, #ff4757, #ff6b81); box-shadow: 0 5px 15px rgba(255,71,87,0.4);">Jugar Modo Hardcore 🔥</button>
+                    <button class="btn-secondary btn-back" data-target="screen-home" style="width: 100%; border-color: transparent;">Salir al Menú</button>
+                </div>
+            </div>
+
+            <button class="btn-exit-small" onclick="confirmExit()">Salir</button>
+        </section>
+
+        <!-- 8. Pantalla de Juego: Ruleta -->
+        <section id="screen-roulette" class="screen hidden">
+            <div class="container roulette-container">
+                <h2 class="roulette-main-title">Gira la Ruleta</h2>
+                
+                <div class="roulette-wrapper">
+                    <div class="roulette-pointer">▼</div>
+                    <div id="roulette-wheel" class="roulette-wheel">
+                        <!-- Secciones CSS -->
+                    </div>
+                </div>
+
+                <button id="btn-spin-roulette" class="btn-giant">Girar 🎲</button>
+
+                <div id="roulette-result-box" class="roulette-result-box hidden">
+                    <h3 id="roulette-title">Resultado</h3>
+                    <p id="roulette-desc">Descripción</p>
+                </div>
+            </div>
+            <button class="btn-exit-small" onclick="confirmExit()">Salir</button>
+        </section>
+
+        <!-- 9. Pantalla de Ranking Final (Para modos con tragos) -->
+        <section id="screen-ranking" class="screen hidden">
+            <div class="container ranking-container">
+                <h2>🏆 Fin del Juego 🏆</h2>
+                <p>Veamos quién tomó más...</p>
+                <div id="ranking-display" class="ranking-display">
+                    <h3 id="ranking-position">1º Lugar</h3>
+                    <div id="ranking-avatar-container">
+                        <div id="ranking-avatar" class="emoji-huge"></div>
+                    </div>
+                    <h2 id="ranking-name">Nombre</h2>
+                    <p id="ranking-drinks">0 Tragos</p>
+                </div>
+                <button id="btn-next-ranking" class="btn-primary">Siguiente Jugador</button>
+                <button class="btn-secondary btn-back mt-auto" data-target="screen-home">Volver al Menú</button>
+            </div>
+        </section>
+    </div>
+
+    <!-- Exit Confirm Modal -->
+    <div id="modal-exit" class="modal hidden">
+        <div class="modal-content">
+            <h3>¿Salir del juego?</h3>
+            <p>Se perderá tu progreso actual.</p>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="closeExitModal()">Cancelar</button>
+                <button class="btn-primary btn-danger" onclick="executeExit()">Salir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Keep Players -->
+    <div id="modal-keep-players" class="modal hidden">
+        <div class="modal-content">
+            <h3>¿Mismos jugadores?</h3>
+            <p>Ya hay jugadores registrados de una partida anterior.</p>
+            <div class="modal-buttons">
+                <button class="btn-secondary" onclick="clearPlayersAndSetup()">Nuevos</button>
+                <button class="btn-primary" style="background-color: #0fb9b1; color: white;" onclick="keepPlayersAndProceed()">Conservar</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="cordova.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

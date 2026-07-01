@@ -1,0 +1,27 @@
+<?xml version='1.0' encoding='utf-8'?>
+<widget id="com.antigravity.tomar" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Affter</name>
+    <description>Juego para beber en fiestas, formando equipos y cumpliendo retos divertidos.</description>
+    <author email="dev@antigravity.com" href="http://antigravity.com">
+        Antigravity Team
+    </author>
+    <content src="index.html" />
+    <access origin="*" />
+    <allow-intent href="http://*/*" />
+    <allow-intent href="https://*/*" />
+    <allow-intent href="tel:*" />
+    <allow-intent href="sms:*" />
+    <allow-intent href="mailto:*" />
+    <allow-intent href="geo:*" />
+    <platform name="android">
+        <allow-intent href="market:*" />
+        <preference name="AndroidXEnabled" value="true" />
+        <preference name="GradlePluginKotlinEnabled" value="true" />
+    </platform>
+    <preference name="Orientation" value="portrait" />
+    <preference name="Fullscreen" value="true" />
+    <preference name="DisallowOverscroll" value="true" />
+    <plugin name="cordova-plugin-admob-free" spec="0.27.0">
+        <variable name="ADMOB_APP_ID" value="ca-app-pub-3940256099942544~3347511713" />
+    </plugin>
+</widget>

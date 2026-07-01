@@ -1,0 +1,25 @@
+{
+  "name": "com.antigravity.tomar",
+  "version": "1.0.0",
+  "description": "App para beber y animar fiestas",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Antigravity",
+  "license": "ISC",
+  "dependencies": {
+    "cordova-android": "^12.0.1",
+    "cordova-plugin-admob-free": "0.27.0"
+  },
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-admob-free": {
+        "ADMOB_APP_ID": "ca-app-pub-3940256099942544~3347511713"
+      }
+    },
+    "platforms": [
+      "android"
+    ]
+  }
+}
