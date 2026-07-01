@@ -44,7 +44,9 @@ jobs:
         run: cordova platform add android@12.0.1
 
       - name: Build Android App Bundle (Release)
-        run: cordova build android --release -- --packageType=bundle
+        run: |
+          echo "configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'; exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" >> platforms/android/app/build.gradle
+          cordova build android --release -- --packageType=bundle
 
       - name: Upload AAB Artifact
         uses: actions/upload-artifact@v4
