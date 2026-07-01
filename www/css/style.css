@@ -674,3 +674,25 @@ body {
     box-shadow: 0 6px 20px rgba(0,0,0,0.5), inset 0 0 15px rgba(255,255,255,0.2);
     border-color: rgba(255, 255, 255, 0.6);
 }
+
+/* PAYWALL & PREMIUM */
+.premium-mode {
+    position: relative;
+    overflow: hidden;
+}
+.premium-badge {
+    position: absolute;
+    top: -5px;
+    right: -25px;
+    background: linear-gradient(90deg, #ff9f43, #ff7f50);
+    color: white;
+    font-size: 0.7rem;
+    font-weight: bold;
+    padding: 20px 25px 5px 25px;
+    transform: rotate(45deg);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
+    z-index: 10;
+}
+.premium-mode.unlocked .premium-badge {
+    display: none;
+}

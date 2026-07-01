@@ -55,16 +55,34 @@
                     <h3>🎡 Affter Ruleta</h3>
                     <p>¡Gira y que la suerte decida tu castigo!</p>
                 </div>
-                <div class="mode-box" data-mode="hot">
+                <div class="mode-box premium-mode" data-mode="hot">
+                    <div class="premium-badge">🔒 PREMIUM</div>
                     <h3>🔥 Affter Hot</h3>
                     <p>Para los atrevidos. Sube la temperatura de la mesa.</p>
                 </div>
-                <div class="mode-box" data-mode="pyramid">
+                <div class="mode-box premium-mode" data-mode="pyramid">
+                    <div class="premium-badge">🔒 PREMIUM</div>
                     <h3>🔺 Affter Pirámide</h3>
                     <p>Una versión de la clásica pirámide actualizada y mucho más hardcore.</p>
                 </div>
             </div>
             <button class="btn-secondary btn-back" data-target="screen-home">Volver</button>
+        </section>
+
+        <!-- 2.5 Pantalla de Paywall -->
+        <section id="screen-paywall" class="screen hidden" style="background: linear-gradient(135deg, #1e002a 0%, #000000 100%);">
+            <div class="container" style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%;">
+                <div class="emoji-huge" style="margin-bottom: 20px;">🔒</div>
+                <h2 style="color: #ff9f43; text-align: center; margin-bottom: 10px;">Desbloquea Affter Premium</h2>
+                <p style="text-align: center; color: #ddd; margin-bottom: 30px; padding: 0 20px;">Juega Affter Hot y Affter Pirámide sin límites.</p>
+                
+                <button id="btn-subscribe" class="btn-giant" style="background: linear-gradient(90deg, #ff9f43, #ff7f50); color: #fff; width: 90%; margin-bottom: 10px;">Comenzar Prueba Gratis de 3 Días</button>
+                <p style="font-size: 0.8rem; color: #888; margin-bottom: 30px; text-align: center;">Luego $1.00 USD / mes.<br>Cancela cuando quieras.</p>
+                
+                <button class="btn-secondary btn-back" data-target="screen-mode-select" style="width: 90%; border: none; margin-bottom: 25px;">Volver al Menú</button>
+                
+                <div id="btn-restore" style="color: #aaa; font-size: 0.9rem; text-decoration: underline; cursor: pointer; padding: 10px;">Restaurar Compras</div>
+            </div>
         </section>
 
         <!-- 3. Pantalla de Configuración (Dinámica) -->

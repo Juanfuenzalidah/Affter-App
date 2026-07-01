@@ -1,4 +1,7 @@
 // --- VARIABLES GLOBALES Y ESTADOS ---
+let isPremium = false;
+const PRODUCT_ID = 'premium_mensual';
+
 const bgmMenu = new Audio('audios/Cut Trance.mp3');
 bgmMenu.loop = true;
 const bgmGame = new Audio('audios/EDM Detection Mode.mp3');
@@ -259,6 +262,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     initAvatarGrid();
 
+    // Paywall
+    document.getElementById('btn-subscribe').addEventListener('click', () => {
+        if (window.store) store.order(PRODUCT_ID);
+    });
+    document.getElementById('btn-restore').addEventListener('click', () => {
+        if (window.store) store.refresh();
+    });
+
     // Navegación General
     document.getElementById('btn-play-home').addEventListener('click', () => switchScreen('screen-home', 'screen-mode-select'));
     document.querySelectorAll('.btn-back').forEach(btn => {
@@ -329,6 +340,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- ENRUTADOR (STATE MACHINE) ---
 function selectMode(mode) {
+    if ((mode === 'hot' || mode === 'pyramid') && !isPremium) {
+        switchScreen('screen-mode-select', 'screen-paywall');
+        return;
+    }
+
     currentMode = mode;
     
     // Resetear variables de juego (SIN borrar players)
@@ -848,12 +864,57 @@ function showNextRanking() {
 let admobReady = false;
 
 function onDeviceReady() {
+    initStore();
+
     if (typeof admob !== 'undefined') {
         admob.interstitial.config({ id: 'ca-app-pub-3940256099942544/1033173712', isTesting: true, autoShow: false });
         admob.interstitial.prepare().then(() => admobReady = true).catch(err => console.log(err));
         
         admob.banner.config({ id: 'ca-app-pub-3940256099942544/6300978111', isTesting: true, autoShow: true });
         admob.banner.prepare();
+    }
+}
+
+function initStore() {
+    if (!window.store) {
+        console.log("Cordova Purchase Plugin no detectado.");
+        return;
+    }
+    
+    store.register({
+        id: PRODUCT_ID,
+        type: store.PAID_SUBSCRIPTION
+    });
+
+    store.when(PRODUCT_ID).approved((product) => {
+        product.verify();
+    });
+
+    store.when(PRODUCT_ID).verified((product) => {
+        product.finish();
+        isPremium = true;
+        unlockPremiumUI();
+    });
+
+    store.when(PRODUCT_ID).owned((product) => {
+        isPremium = true;
+        unlockPremiumUI();
+    });
+    
+    store.error((err) => {
+        console.log('Store Error: ' + JSON.stringify(err));
+    });
+
+    store.refresh();
+}
+
+function unlockPremiumUI() {
+    document.querySelectorAll('.premium-mode').forEach(el => {
+        el.classList.add('unlocked');
+    });
+    
+    if (document.getElementById('screen-paywall').classList.contains('active')) {
+        switchScreen('screen-paywall', 'screen-mode-select');
     }
 }
 

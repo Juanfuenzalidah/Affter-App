@@ -26,4 +26,5 @@
         <variable name="ADMOB_APP_ID" value="ca-app-pub-3940256099942544~3347511713" />
     </plugin>
     <plugin name="cordova-plugin-androidx-adapter" />
+    <plugin name="cordova-plugin-purchase" spec="^13.0.0" />
 </widget>
