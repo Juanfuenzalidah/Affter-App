@@ -23,7 +23,7 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
-          java-version: '11'
+          java-version: '17'
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -38,7 +38,8 @@ jobs:
 
       - name: Install Android Build Tools
         run: |
-          echo "y" | sdkmanager "build-tools;33.0.2"
+          echo "y" | sdkmanager "platforms;android-35"
+          echo "y" | sdkmanager "build-tools;34.0.0"
 
       - name: Add Android Platform
         run: cordova platform add android@12.0.1
