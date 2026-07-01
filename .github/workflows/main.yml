@@ -26,24 +26,23 @@ jobs:
           java-version: '17'
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v3
         with:
-          gradle-version: 7.6.4
+          gradle-version: '8.7'
 
       - name: Setup Android SDK
-        uses: android-actions/setup-android@v2
+        uses: android-actions/setup-android@v3
+
+      - name: Install Android Build Tools
+        run: |
+          yes | sdkmanager "platforms;android-35"
+          yes | sdkmanager "build-tools;34.0.0"
 
       - name: Install Cordova
         run: npm install -g cordova
 
-      - name: Install Android Build Tools
-        run: |
-          echo "y" | sdkmanager "platforms;android-35"
-          echo "y" | sdkmanager "build-tools;33.0.2"
-          echo "y" | sdkmanager "build-tools;34.0.0"
-
       - name: Add Android Platform
-        run: cordova platform add android@12.0.1
+        run: cordova platform add android@13.0.0
 
       - name: Build Android App Bundle (Release)
         run: |
