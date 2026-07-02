@@ -10,12 +10,12 @@
   "license": "ISC",
   "dependencies": {
     "cordova-android": "^13.0.0",
-    "cordova-plugin-admob-free": "0.27.0"
+    "admob-plus-cordova": "^1.28.0"
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-admob-free": {
-        "ADMOB_APP_ID": "ca-app-pub-3940256099942544~3347511713"
+      "admob-plus-cordova": {
+        "APP_ID_ANDROID": "ca-app-pub-3940256099942544~3347511713"
       }
     },
     "platforms": [

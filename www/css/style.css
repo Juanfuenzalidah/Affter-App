@@ -175,7 +175,7 @@ p { text-align: center; margin-bottom: 15px; font-size: 1rem; color: #555; }
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: 1fr;
+    grid-auto-rows: minmax(170px, auto);
     gap: 15px;
     overflow-y: auto;
     padding-bottom: 20px;
@@ -188,7 +188,7 @@ p { text-align: center; margin-bottom: 15px; font-size: 1rem; color: #555; }
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 20px 15px;
+    padding: 15px 10px;
     text-align: center;
     cursor: pointer;
     border: 2px solid rgba(255, 255, 255, 0.1);
@@ -678,20 +678,18 @@ body {
 /* PAYWALL & PREMIUM */
 .premium-mode {
     position: relative;
-    overflow: hidden;
 }
 .premium-badge {
-    position: absolute;
-    top: -5px;
-    right: -25px;
     background: linear-gradient(90deg, #ff9f43, #ff7f50);
     color: white;
-    font-size: 0.7rem;
+    font-size: 0.8rem;
     font-weight: bold;
-    padding: 20px 25px 5px 25px;
-    transform: rotate(45deg);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.5);
-    z-index: 10;
+    padding: 5px 15px;
+    border-radius: 20px;
+    margin-top: 10px;
+    display: inline-block;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+    align-self: center;
 }
 .premium-mode.unlocked .premium-badge {
     display: none;

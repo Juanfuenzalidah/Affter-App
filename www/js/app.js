@@ -861,17 +861,30 @@ function showNextRanking() {
 }
 
 // --- ADMOB ---
-let admobReady = false;
+let interstitialAd = null;
+let bannerAd = null;
 
-function onDeviceReady() {
+async function onDeviceReady() {
     initStore();
 
     if (typeof admob !== 'undefined') {
-        admob.interstitial.config({ id: 'ca-app-pub-3940256099942544/1033173712', isTesting: true, autoShow: false });
-        admob.interstitial.prepare().then(() => admobReady = true).catch(err => console.log(err));
-        
-        admob.banner.config({ id: 'ca-app-pub-3940256099942544/6300978111', isTesting: true, autoShow: true });
-        admob.banner.prepare();
+        try {
+            await admob.start();
+            
+            interstitialAd = new admob.InterstitialAd({
+                adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+            });
+            
+            await interstitialAd.load();
+            
+            bannerAd = new admob.BannerAd({
+                adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+                position: 'bottom',
+            });
+            await bannerAd.show();
+        } catch (err) {
+            console.log("AdMob Error:", err);
+        }
     }
 }
 
@@ -918,12 +931,17 @@ function unlockPremiumUI() {
     }
 }
 
-function showInterstitial() {
-    if (admobReady && typeof admob !== 'undefined') {
-        admob.interstitial.show().then(() => {
-            admobReady = false;
-            admob.interstitial.prepare().then(() => admobReady = true);
-        }).catch(err => console.log(err));
+async function showInterstitial() {
+    if (interstitialAd) {
+        try {
+            const isLoaded = await interstitialAd.isLoaded();
+            if (isLoaded) {
+                await interstitialAd.show();
+                await interstitialAd.load(); // Cargar el siguiente
+            }
+        } catch (err) {
+            console.log("Show Interstitial Error:", err);
+        }
     }
 }
 

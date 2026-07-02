@@ -20,12 +20,15 @@
         <preference name="GradlePluginKotlinEnabled" value="true" />
         <preference name="android-targetSdkVersion" value="35" />
         <preference name="android-compileSdkVersion" value="35" />
+        <config-file target="AndroidManifest.xml" parent="/*">
+            <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
+        </config-file>
     </platform>
     <preference name="Orientation" value="portrait" />
     <preference name="Fullscreen" value="true" />
     <preference name="DisallowOverscroll" value="true" />
-    <plugin name="cordova-plugin-admob-free" spec="0.27.0">
-        <variable name="ADMOB_APP_ID" value="ca-app-pub-3940256099942544~3347511713" />
+    <plugin name="admob-plus-cordova" spec="^1.28.0">
+        <variable name="APP_ID_ANDROID" value="ca-app-pub-3940256099942544~3347511713" />
     </plugin>
     <plugin name="cordova-plugin-androidx-adapter" />
     <plugin name="cordova-plugin-purchase" spec="^13.0.0" />
