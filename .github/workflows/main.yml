@@ -47,21 +47,10 @@ jobs:
       - name: Build Android App Bundle (Release)
         run: |
           echo "configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'; exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" >> platforms/android/app/build.gradle
-          cordova build android --release -- --packageType=bundle
-
-      - name: Crear Firma Digital (Keystore) y Firmar el Juego
-        run: |
-          keytool -genkey -v -keystore affter.keystore -alias affter -keyalg RSA -keysize 2048 -validity 10000 -storepass "affter123" -keypass "affter123" -dname "CN=Affter"
-          jarsigner -verbose -sigalg SHA256withRSA -digestalg SHA-256 -keystore affter.keystore -storepass "affter123" platforms/android/app/build/outputs/bundle/release/app-release.aab affter
+          cordova build android --release --buildConfig build.json -- --packageType=bundle
 
       - name: Subir AAB Firmado (Sube esto a Google Play)
         uses: actions/upload-artifact@v4
         with:
           name: app-release-firmado
           path: platforms/android/app/build/outputs/bundle/release/app-release.aab
-
-      - name: Guardar Llave Maestra (Guarda esto en tu PC)
-        uses: actions/upload-artifact@v4
-        with:
-          name: llave-maestra-affter
-          path: affter.keystore
