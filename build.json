@@ -1,0 +1,11 @@
+{
+    "android": {
+        "release": {
+            "keystore": "affter.keystore",
+            "storePassword": "affter123",
+            "alias": "affter",
+            "password" : "affter123",
+            "keystoreType": ""
+        }
+    }
+}

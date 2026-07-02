@@ -1,6 +1,6 @@
 {
   "name": "com.antigravity.tomar",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "App para beber y animar fiestas",
   "main": "index.js",
   "scripts": {
