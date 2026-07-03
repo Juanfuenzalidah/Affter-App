@@ -294,6 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
     window.executeExit = function() {
         document.getElementById('modal-exit').classList.add('hidden');
+        showInterstitial();
         clearInterval(movementInterval);
         switchScreen(document.querySelector('.screen.active').id, 'screen-mode-select');
     };
@@ -431,6 +432,16 @@ function switchScreen(hideId, showId) {
     if(showId.startsWith('screen-game') || showId === 'screen-captain' || showId === 'screen-roulette' || showId === 'screen-pyramid') {
         showScreen.classList.remove('bg-classic', 'bg-chupistico', 'bg-retos', 'bg-hot', 'bg-roulette', 'bg-pyramid');
         if(currentMode) showScreen.classList.add('bg-' + currentMode);
+    }
+
+    // --- MANEJO DE BANNER ---
+    if (bannerAd) {
+        const menuScreens = ['screen-home', 'screen-mode-select', 'screen-setup'];
+        if (menuScreens.includes(showId)) {
+            bannerAd.show().catch(e => console.log(e));
+        } else {
+            bannerAd.hide().catch(e => console.log(e));
+        }
     }
 
     const canvas = document.getElementById('particles-canvas');
@@ -756,7 +767,7 @@ function showNextCard() {
         currentCardCount++;
         document.querySelectorAll('.current-card').forEach(el => el.textContent = currentCardCount);
         
-        if(currentCardCount % Math.floor(Math.random() * 5 + 8) === 0) {
+        if(currentCardCount % 25 === 0 && currentCardCount > 0 && currentCardCount < MAX_CARDS) {
             showInterstitial();
         }
 
@@ -822,6 +833,7 @@ function getRandomPlayerName(exclude = []) {
 let rankingQueue = [];
 
 function endGame() {
+    showInterstitial();
     clearInterval(movementInterval);
     rankingQueue = [...players].sort((a, b) => b.drinks - a.drinks);
     
@@ -872,13 +884,13 @@ async function onDeviceReady() {
             await admob.start();
             
             interstitialAd = new admob.InterstitialAd({
-                adUnitId: 'ca-app-pub-3940256099942544/1033173712',
+                adUnitId: 'ca-app-pub-9175463204669767/2063064270',
             });
             
             await interstitialAd.load();
             
             bannerAd = new admob.BannerAd({
-                adUnitId: 'ca-app-pub-3940256099942544/6300978111',
+                adUnitId: 'ca-app-pub-9175463204669767/9918337718',
                 position: 'bottom',
             });
             await bannerAd.show();

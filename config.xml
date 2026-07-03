@@ -28,7 +28,7 @@
     <preference name="Fullscreen" value="true" />
     <preference name="DisallowOverscroll" value="true" />
     <plugin name="admob-plus-cordova" spec="^1.28.0">
-        <variable name="APP_ID_ANDROID" value="ca-app-pub-3940256099942544~3347511713" />
+        <variable name="APP_ID_ANDROID" value="ca-app-pub-9175463204669767~2614562763" />
     </plugin>
     <plugin name="cordova-plugin-androidx-adapter" />
     <plugin name="cordova-plugin-purchase" spec="^13.0.0" />
