@@ -626,7 +626,7 @@ function renderArena() {
         const avatarEl = document.createElement('div');
         avatarEl.className = 'plaza-avatar';
         avatarEl.id = `avatar-${index}`;
-        avatarEl.textContent = player.avatar;
+        avatarEl.innerHTML = `<div class="avatar-emoji">${player.avatar}</div><div class="avatar-name-label">${player.name}</div>`;
         avatarEl.style.left = `${player.x}%`;
         avatarEl.style.top = `${player.y}%`;
         avatarEl.onclick = () => spawnCustomSpeechBubble(player.x, player.y - 10);

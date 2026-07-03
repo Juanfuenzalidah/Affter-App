@@ -43,7 +43,7 @@ body {
     display: none;
     flex: 1;
     flex-direction: column;
-    padding: 20px;
+    padding: 50px 30px 20px 30px;
     animation: fadeIn 0.4s ease-out;
     height: 100%;
     background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
@@ -160,12 +160,12 @@ p { text-align: center; margin-bottom: 15px; font-size: 1rem; color: #555; }
 .bg-pyramid { background: url('../img/bg_pyramid.png') center/cover no-repeat !important; color: white; }
 .bg-pyramid_hardcore { background: url('../img/bg_pyramid_hardcore.png') center/cover no-repeat !important; color: white; }
 .modes-title {
-    font-size: 2.2rem;
+    font-size: 1.6rem;
     color: transparent;
     background: linear-gradient(90deg, #ff9ff3, #feca57, #ff6b6b);
     -webkit-background-clip: text;
     background-clip: text;
-    margin-bottom: 25px;
+    margin-bottom: 20px;
     position: relative;
     z-index: 10;
     text-transform: uppercase;
@@ -175,8 +175,8 @@ p { text-align: center; margin-bottom: 15px; font-size: 1rem; color: #555; }
 .mode-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    grid-auto-rows: minmax(170px, auto);
-    gap: 15px;
+    grid-auto-rows: minmax(125px, auto);
+    gap: 20px;
     overflow-y: auto;
     padding-bottom: 20px;
     flex: 1;
@@ -199,13 +199,13 @@ p { text-align: center; margin-bottom: 15px; font-size: 1rem; color: #555; }
 }
 .mode-box:active { transform: scale(0.95); }
 .mode-box h3 { 
-    font-size: 1.15rem; 
+    font-size: 1.05rem; 
     color: white; 
-    margin-bottom: 8px; 
+    margin-bottom: 5px; 
     text-shadow: 0 2px 5px rgba(0,0,0,0.8);
 }
 .mode-box p { 
-    font-size: 0.85rem; 
+    font-size: 0.75rem; 
     margin: 0; 
     color: #e0e0e0; 
     line-height: 1.3;
@@ -400,14 +400,29 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 
 .plaza-avatar {
     position: absolute;
-    font-size: 2.5rem;
-    line-height: 1;
     transform-origin: bottom center;
     transition: left 2s linear, top 2s linear, transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     cursor: pointer;
     z-index: 10;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.avatar-emoji {
+    font-size: 2.5rem;
+    line-height: 1;
+}
+.avatar-name-label {
+    font-size: 0.75rem;
+    color: white;
+    background: rgba(0, 0, 0, 0.6);
+    padding: 2px 6px;
+    border-radius: 10px;
+    margin-top: 4px;
+    font-weight: 600;
 }
 .plaza-avatar:active {
     transform: scale(0.6) !important;
