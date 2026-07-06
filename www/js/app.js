@@ -257,9 +257,9 @@ const cardDatabaseHot = [
 ];
 
 // --- EVENT LISTENERS ---
-document.addEventListener('DOMContentLoaded', () => {
-    document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("deviceready", onDeviceReady, false);
 
+document.addEventListener('DOMContentLoaded', () => {
     initAvatarGrid();
 
     // Paywall
