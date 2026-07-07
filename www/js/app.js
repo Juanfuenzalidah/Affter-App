@@ -946,13 +946,12 @@ function unlockPremiumUI() {
 async function showInterstitial() {
     if (interstitialAd) {
         try {
-            const isLoaded = await interstitialAd.isLoaded();
-            if (isLoaded) {
-                await interstitialAd.show();
-                await interstitialAd.load(); // Cargar el siguiente
-            }
+            await interstitialAd.show();
+            await interstitialAd.load(); // Cargar el siguiente
         } catch (err) {
             console.log("Show Interstitial Error:", err);
+            // Intentar cargar de nuevo para la próxima vez en caso de que no estuviera cargado
+            try { await interstitialAd.load(); } catch(e) {}
         }
     }
 }
