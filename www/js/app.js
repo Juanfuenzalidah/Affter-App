@@ -891,8 +891,7 @@ let interstitialAd = null;
 let bannerAd = null;
 
 async function onDeviceReady() {
-    initStore();
-
+    // 1. Iniciar AdMob primero
     if (typeof admob !== 'undefined') {
         try {
             await admob.start();
@@ -914,6 +913,13 @@ async function onDeviceReady() {
         }
     } else {
         alert("ERROR: La variable admob no existe. El plugin no se instaló correctamente en el celular.");
+    }
+    
+    // 2. Iniciar Store después de AdMob, protegido por try-catch para que si falla no rompa el juego
+    try {
+        initStore();
+    } catch (e) {
+        console.log("Store Init Error:", e);
     }
 }
 
