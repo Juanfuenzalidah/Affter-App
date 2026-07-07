@@ -400,7 +400,21 @@ function startGameSimple() {
     showNextCard();
 }
 
-// La función resetToHome fue reemplazada por la navegación dinámica con data-target
+function resetToHome() {
+    document.querySelectorAll('.screen').forEach(s => {
+        s.classList.remove('active');
+        s.classList.add('hidden');
+    });
+    document.getElementById('screen-home').classList.remove('hidden');
+    document.getElementById('screen-home').classList.add('active');
+    
+    if (isAudioInitialized) {
+        bgmGame.pause();
+        bgmGame.currentTime = 0;
+        if (bgmMenu.paused) bgmMenu.play().catch(e => console.log(e));
+    }
+    if (bannerAd) bannerAd.show().catch(e => console.log(e));
+}
 
 function switchScreen(hideId, showId) {
     document.getElementById(hideId).classList.remove('active');
@@ -884,13 +898,13 @@ async function onDeviceReady() {
             await admob.start();
             
             interstitialAd = new admob.InterstitialAd({
-                adUnitId: 'ca-app-pub-9175463204669767/2063064270',
+                adUnitId: 'ca-app-pub-3940256099942544/1033173712', // TEST ID
             });
             
             await interstitialAd.load();
             
             bannerAd = new admob.BannerAd({
-                adUnitId: 'ca-app-pub-9175463204669767/9918337718',
+                adUnitId: 'ca-app-pub-3940256099942544/6300978111', // TEST ID
                 position: 'bottom',
             });
             await bannerAd.show();
