@@ -910,7 +910,10 @@ async function onDeviceReady() {
             await bannerAd.show();
         } catch (err) {
             console.log("AdMob Error:", err);
+            alert("Error fatal de AdMob: " + JSON.stringify(err));
         }
+    } else {
+        alert("ERROR: La variable admob no existe. El plugin no se instaló correctamente en el celular.");
     }
 }
 
@@ -964,9 +967,12 @@ async function showInterstitial() {
             await interstitialAd.load(); // Cargar el siguiente
         } catch (err) {
             console.log("Show Interstitial Error:", err);
+            alert("Error intentando mostrar el anuncio (¿no cargó a tiempo?): " + JSON.stringify(err));
             // Intentar cargar de nuevo para la próxima vez en caso de que no estuviera cargado
             try { await interstitialAd.load(); } catch(e) {}
         }
+    } else {
+        alert("ERROR: No se mostró el anuncio porque interstitialAd es null (AdMob nunca inició).");
     }
 }
 
