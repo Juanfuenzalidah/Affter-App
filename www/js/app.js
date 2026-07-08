@@ -897,22 +897,19 @@ async function onDeviceReady() {
             await admob.start();
             
             interstitialAd = new admob.InterstitialAd({
-                adUnitId: 'ca-app-pub-3940256099942544/1033173712', // TEST ID
+                adUnitId: 'ca-app-pub-9175463204669767/2063064270', // ID Real
             });
             
             await interstitialAd.load();
             
             bannerAd = new admob.BannerAd({
-                adUnitId: 'ca-app-pub-3940256099942544/6300978111', // TEST ID
+                adUnitId: 'ca-app-pub-9175463204669767/9918337718', // ID Real
                 position: 'bottom',
             });
             await bannerAd.show();
         } catch (err) {
             console.log("AdMob Error:", err);
-            alert("Error fatal de AdMob: " + JSON.stringify(err));
         }
-    } else {
-        alert("ERROR: La variable admob no existe. El plugin no se instaló correctamente en el celular.");
     }
     
     // 2. Iniciar Store después de AdMob, protegido por try-catch para que si falla no rompa el juego
@@ -973,12 +970,9 @@ async function showInterstitial() {
             await interstitialAd.load(); // Cargar el siguiente
         } catch (err) {
             console.log("Show Interstitial Error:", err);
-            alert("Error intentando mostrar el anuncio (¿no cargó a tiempo?): " + JSON.stringify(err));
             // Intentar cargar de nuevo para la próxima vez en caso de que no estuviera cargado
             try { await interstitialAd.load(); } catch(e) {}
         }
-    } else {
-        alert("ERROR: No se mostró el anuncio porque interstitialAd es null (AdMob nunca inició).");
     }
 }
 
