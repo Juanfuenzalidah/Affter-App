@@ -258,16 +258,51 @@ const cardDatabaseHot = [
 
 // --- EVENT LISTENERS ---
 document.addEventListener("deviceready", onDeviceReady, false);
+document.addEventListener("pause", onPause, false);
+document.addEventListener("resume", onResume, false);
+
+let wasMenuPlaying = false;
+let wasGamePlaying = false;
+
+function onPause() {
+    wasMenuPlaying = !bgmMenu.paused;
+    wasGamePlaying = !bgmGame.paused;
+    bgmMenu.pause();
+    bgmGame.pause();
+}
+
+function onResume() {
+    if (isGlobalMuted || !isAudioInitialized) return;
+    if (wasMenuPlaying) bgmMenu.play().catch(e => console.log(e));
+    if (wasGamePlaying) bgmGame.play().catch(e => console.log(e));
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     initAvatarGrid();
 
     // Paywall
     document.getElementById('btn-subscribe').addEventListener('click', () => {
-        if (window.store) store.order(PRODUCT_ID);
+        if (window.CdvPurchase && window.CdvPurchase.store) {
+            const store = window.CdvPurchase.store;
+            const product = store.get(PRODUCT_ID, window.CdvPurchase.Platform.GOOGLE_PLAY);
+            if (product) {
+                const offer = product.getOffer();
+                if (offer) {
+                    offer.order();
+                } else {
+                    alert("No se encontró la oferta. Revisa Google Play Console.");
+                }
+            } else {
+                alert("Producto no encontrado. Revisa Google Play Console.");
+            }
+        } else {
+            alert("El servicio de compras no está disponible.");
+        }
     });
     document.getElementById('btn-restore').addEventListener('click', () => {
-        if (window.store) store.refresh();
+        if (window.CdvPurchase && window.CdvPurchase.store) {
+            window.CdvPurchase.store.restorePurchases();
+        }
     });
 
     // Navegación General
@@ -352,6 +387,7 @@ function selectMode(mode) {
     captain = "";
     currentCardCount = 0;
     usedCards = [];
+    document.querySelectorAll('.btn-next-card').forEach(btn => btn.textContent = "Siguiente 🍻");
     clearInterval(movementInterval);
     
     // Rutas según modo
@@ -921,27 +957,30 @@ async function onDeviceReady() {
 }
 
 function initStore() {
-    if (!window.store) {
-        console.log("Cordova Purchase Plugin no detectado.");
+    if (!window.CdvPurchase || !window.CdvPurchase.store) {
+        console.log("Cordova Purchase Plugin v13 no detectado.");
         return;
     }
     
-    store.register({
+    const store = window.CdvPurchase.store;
+    const ProductType = window.CdvPurchase.ProductType;
+    const Platform = window.CdvPurchase.Platform;
+    
+    store.register([{
         id: PRODUCT_ID,
-        type: store.PAID_SUBSCRIPTION
+        type: ProductType.PAID_SUBSCRIPTION,
+        platform: Platform.GOOGLE_PLAY
+    }]);
+
+    store.when().approved(transaction => {
+        transaction.verify();
     });
 
-    store.when(PRODUCT_ID).approved((product) => {
-        product.verify();
+    store.when().verified(receipt => {
+        receipt.finish();
     });
 
-    store.when(PRODUCT_ID).verified((product) => {
-        product.finish();
-        isPremium = true;
-        unlockPremiumUI();
-    });
-
-    store.when(PRODUCT_ID).owned((product) => {
+    store.when().has(PRODUCT_ID).owned(product => {
         isPremium = true;
         unlockPremiumUI();
     });
@@ -950,7 +989,7 @@ function initStore() {
         console.log('Store Error: ' + JSON.stringify(err));
     });
 
-    store.refresh();
+    store.initialize([Platform.GOOGLE_PLAY]);
 }
 
 function unlockPremiumUI() {
@@ -1063,6 +1102,7 @@ const rouletteDatabase = [
 ];
 
 let currentRouletteRotation = 0;
+let rouletteSpinCount = 0;
 
 function initRoulette() {
     const wheel = document.getElementById('roulette-wheel');
@@ -1122,6 +1162,11 @@ function spinRoulette() {
         descEl.textContent = outcome;
         resultBox.classList.remove('hidden');
         btnSpin.removeAttribute('disabled');
+        
+        rouletteSpinCount++;
+        if (rouletteSpinCount % 10 === 0) {
+            showInterstitial();
+        }
     }, 4000);
 }
 
@@ -1149,6 +1194,7 @@ const pyramidHardcoreDatabase = {
 let currentPyramidPlayerIndex = 0;
 let currentPyramidRow = 1;
 let pyramidCardsFlippedInRow = 0;
+let totalPyramidCardsFlipped = 0;
 
 function initPyramid() {
     const grid = document.getElementById('pyramid-grid');
@@ -1218,6 +1264,11 @@ function flipPyramidCard(card, row) {
     
     document.getElementById('pyramid-card-text').textContent = text;
     document.getElementById('modal-pyramid-card').classList.remove('hidden');
+    
+    totalPyramidCardsFlipped++;
+    if (totalPyramidCardsFlipped % 8 === 0) {
+        showInterstitial();
+    }
     
     pyramidCardsFlippedInRow++;
     let expectedCards = 7 - row;
