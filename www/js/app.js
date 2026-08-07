@@ -376,9 +376,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // --- ENRUTADOR (STATE MACHINE) ---
 function selectMode(mode) {
-    if ((mode === 'hot' || mode === 'pyramid') && !isPremium) {
-        switchScreen('screen-mode-select', 'screen-paywall');
-        return;
+    if (mode === 'hot' || mode === 'pyramid') {
+        showInterstitial();
     }
 
     currentMode = mode;
