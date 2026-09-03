@@ -9,48 +9,37 @@ on:
 jobs:
   build:
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '18'
+    - name: Setup Java JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: '17'
+        distribution: 'zulu'
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '17'
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
-        with:
-          gradle-version: '8.7'
+    - name: Install dependencies
+      run: npm install
 
-      - name: Setup Android SDK
-        uses: android-actions/setup-android@v3
+    - name: Build Web Assets
+      run: npm run build
 
-      - name: Install Android Build Tools
-        run: |
-          yes | sdkmanager "platforms;android-35"
-          yes | sdkmanager "build-tools;34.0.0"
+    - name: Sync Capacitor Android
+      run: npx cap sync android
 
-      - name: Install Cordova
-        run: npm install -g cordova
+    - name: Build Android App Bundle (AAB)
+      run: |
+        cd android
+        ./gradlew bundleRelease
 
-      - name: Add Android Platform
-        run: cordova platform add android@13.0.0
-
-      - name: Build Android App Bundle (Release)
-        run: |
-          echo "configurations.all { exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk7'; exclude group: 'org.jetbrains.kotlin', module: 'kotlin-stdlib-jdk8' }" >> platforms/android/app/build.gradle
-          cordova build android --release --buildConfig build.json -- --packageType=bundle
-
-      - name: Subir AAB Firmado (Sube esto a Google Play)
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-release-firmado
-          path: platforms/android/app/build/outputs/bundle/release/app-release.aab
+    - name: Upload AAB Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: app-release-aab
+        path: android/app/build/outputs/bundle/release/app-release.aab
