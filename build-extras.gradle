@@ -9,5 +9,9 @@ configurations.all {
         // NOTE: 23.x removed MobileAds.getVersionString() used by admob-plus-cordova
         force 'com.google.android.gms:play-services-ads:22.6.0'
         force 'com.google.android.gms:play-services-ads-lite:22.6.0'
+
+        // Force older AndroidX core to avoid compileSdk 35 requirement
+        force 'androidx.core:core:1.13.1'
+        force 'androidx.core:core-ktx:1.13.1'
     }
 }
