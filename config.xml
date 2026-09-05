@@ -19,8 +19,8 @@
         <allow-intent href="market:*" />
         <preference name="AndroidXEnabled" value="true" />
         <preference name="GradlePluginKotlinEnabled" value="true" />
-        <preference name="android-targetSdkVersion" value="34" />
-        <preference name="android-compileSdkVersion" value="34" />
+        <preference name="android-targetSdkVersion" value="35" />
+        <preference name="android-compileSdkVersion" value="35" />
         <config-file target="AndroidManifest.xml" parent="/*">
             <uses-permission android:name="com.google.android.gms.permission.AD_ID" />
         </config-file>
