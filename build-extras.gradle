@@ -5,9 +5,9 @@ configurations.all {
         force 'org.jetbrains.kotlin:kotlin-stdlib:1.8.22'
         force 'org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.22'
         force 'org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.22'
-        // Upgrade GMA SDK from deprecated to 22.3.0 (latest before getVersionString was removed)
-        force 'com.google.android.gms:play-services-ads:22.3.0'
-        force 'com.google.android.gms:play-services-ads-lite:22.3.0'
+        // Upgrade GMA SDK to 22.6.0 (patched by script)
+        force 'com.google.android.gms:play-services-ads:22.6.0'
+        force 'com.google.android.gms:play-services-ads-lite:22.6.0'
 
         // Force older AndroidX core to avoid compileSdk 35 requirement
         force 'androidx.core:core:1.13.1'

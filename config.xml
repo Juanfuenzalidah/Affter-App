@@ -15,6 +15,7 @@
     <allow-intent href="geo:*" />
     <icon src="icono_app.png" />
     <platform name="android">
+        <hook type="before_compile" src="scripts/patch-admob.js" />
         <resource-file src="build-extras.gradle" target="app/build-extras.gradle" />
         <allow-intent href="market:*" />
         <preference name="AndroidXEnabled" value="true" />
